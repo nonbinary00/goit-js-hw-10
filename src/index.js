@@ -37,3 +37,19 @@ input.addEventListener(
       }
     }, DEBOUNCE_DELAY)
   );
+
+//Функция для создания разметки, если количество возвращаемых объектов меньше 10, но больше или равно 2
+
+  function renderCountryList(countries) {
+    const markup = countries
+      .map(country => {
+        return `<li>
+        <img src="${country.flags.svg}" alt="Flag of ${
+          country.name.official
+        }" width="30" hight="20">
+           <b>${country.name.official}</p>
+                  </li>`;
+      })
+      .join('');
+    countryList.innerHTML = markup;
+  }
