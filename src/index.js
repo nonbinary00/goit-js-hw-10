@@ -11,6 +11,14 @@ const DEBOUNCE_DELAY = 300;
 
 // Слушатель событий для ввода
 //Используем debounce для предотвращения болтливого события
+// при вводе очистить (поиск текста); //если искомый текст представляет собой пустую строку, разметка будет очищена и выборка не будет выполняться
+//Выборка для стран
+//onSuccess возвращает массив объектов в соответствии с searchText
+//В зависимости от количества возвращенных объектов будет создана соответствующая разметка
+// При ошибке будет отображаться сообщение Notify
+//Функция для отображения сообщения, если выполняется catch
+//Функция для очистки разметки
+//Функция для создания разметки в зависимости от того, сколько объектов возвращено из API
 
 input.addEventListener(
     'input',
@@ -44,12 +52,36 @@ input.addEventListener(
     const markup = countries
       .map(country => {
         return `<li>
-        <img src="${country.flags.svg}" alt="Flag of ${
-          country.name.official
-        }" width="30" hight="20">
+        <img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="30" hight="20">
            <b>${country.name.official}</p>
                   </li>`;
       })
       .join('');
     countryList.innerHTML = markup;
   }
+
+
+  //Функция для создания разметки, если количество возвращаемых объектов равно 1
+//Используем data[0], потому что знаем, что ответ будет массивом только с 1 объектом внутри
+
+function renderOneCountry(countries) {
+    const markup = countries
+      .map(country => {
+        return `<li>
+    <img src="${country.flags.svg}" alt="Flag of ${
+          country.name.official
+        }" width="30" hight="20">
+       <b>${country.name.official}</b></p>
+          <p><b>Capital</b>: ${country.capital}</p>
+          <p><b>Population</b>: ${country.population}</p>
+          <p><b>Languages</b>: ${Object.values(country.languages)} </p>
+              </li>`;
+      })
+      .join('');
+    countryList.innerHTML = markup;
+}
+
+function cleanHtml() {
+countryList.innerHTML = '';
+countryInfo.innerHTML = '';
+}
